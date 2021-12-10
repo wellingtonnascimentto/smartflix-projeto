@@ -28,46 +28,302 @@ Criação do projeto utilizando o NESTJS, um dos melhores frameworks para se tra
 
 ## Installation
 
+Para iniciar com o NestJS devemos instalar a NestJS CLI de forma global:
+
 ```bash
-$ npm install
+npm i -g @nestjs/cli
 ```
+
+Crie e abra uma pasta no VSCode onde você deseja que o repositório que vamos criar, fique armazenado. Para criar um novo projeto utilize o seguinte comando e onde está `project-name` mude para o nome do seu projeto.
+
+```basic
+nest new project-name
+```
+
+Logo após ele vai perguntar qual gerencador de pacotes queremos usar, pode utilizar o da sua preferência, nesse exemplo utilizaremos o `npm`.
+
+Neste momento, foi criado uma nova pasta com o seu projeto, você deve garantir que a pasta que foi criada, esteja aberta no VSCode:
+
+```basic
+cd "my-nest-project"
+```
+
+Para testar se o seu projeto está rodando, entre com o comando:
+
+```bash
+npm run start:dev
+```
+
+Ele deverá por padrão em http://localhost:3000
+
+Quando rodamos esse comando, automaticamente o NestJS gera a pasta `dist`, onde contém arquivos `.js`, `.map` e `.d.ts.
+
+Explorando um pouco a estrutura do NestJS, percebemos que temos 5 arquivos que foram gerados automaticamente dentro da pasta src: 
+
+![img](https://blueedtech.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-Mj_r__f7dzSt2HUbwjg%2Fuploads%2FSzHtCS9EudOxrUvSywZr%2Fimg10.PNG?alt=media&token=9e3d8e21-772e-4992-b3e2-90260bacd047)
+
+São eles: 
+
+- app.controller.spec.ts, 
+- app.controller.ts, 
+- app.module.ts, 
+- app.service.ts 
+- E dentro dessa aplicação temos o arquivo mais importante que é o "coração" do projeto o main.ts.
+
+## Neste projeto:
+
+Para este projeto foram criadas 3 pastas distintas dentro da pasta `src` são elas:
+
+- Pasta Filmes.
+- Pasta Genero.
+- Pasta Participante.
+
+Para criação das pastas é necessario rodar o comando `nest g resource-nome da pasta` para criação de  cada uma delas, exemplo:
+
+```basic
+nest g resource filmes
+```
+
+Com esse comando havera a criação da pasta no caso (filmes) e dentro dela terá todos os demais arquivos e pastas necessario para rodar o projeto desta pasta.
+
+Rode o mesmo comando para criação das outras duas pastas.
+
+## Algumas Validações Importantes
+
+Rode estes dois comandos:
+
+```bash
+npm i --save class-validator class-transformer
+```
+
+```bash
+npm i --save helmet
+```
+
+ E faça as alterações necessarias para que seu codigo fique desta maneira:
+
+```javascript
+import { ValidationPipe } from '@nestjs/common'; //Para o class-validator funcionar
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import * as helmet from 'helmet'; // Para o helmet funcionar
+
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule);
+  app.useGlobalPipes(new ValidationPipe()); //Para funcionar o class-validator
+  app.use(helmet()); //Para funcionar o helmet
+  await app.listen(3000);
+}
+bootstrap();
+
+```
+
+## Prisma
+
+Para que o prisma podesse ser utilizado instalei as seguintes dependencias:
+
+```bash
+npm install prisma --save-dev
+```
+
+```basic
+npx prisma init
+```
+
+```bash
+npm install @prisma/client
+```
+
+Este comando é para gerar a tabela do schema.prisma no banco do Postgre :
+
+```bash
+npx prrisma generate
+```
+
+Este é para dar um push na tabela:
+
+```bash
+npx prisma db push
+```
+
+Este comando é para testar se tudo esta certo e funcionando corretamente no prisma estudio ainda na versão beta:
+
+```
+npx prisma studio
+```
+
+## Rotas
+
+**Temos 3 rotas principais:**
+
+`/filmes.`
+
+`/genero.`
+
+`/participante`.
+
+**Dentro de cada rota temos um CRUD completo criado com os Decorator:**
+
+ `@POst()` 	**Cada uma das rotas principais tem o seu:**
+
+```javascript
+@Post()
+  async create(@Body() createFilmeDto: CreateFilmeDto) {
+    return this.filmesService.createPrisma(createFilmeDto);
+  }
+```
+
+```javascript
+@Post()
+  create(@Body() createGeneroDto: CreateGeneroDto) {
+    return this.generoService.createPrisma(createGeneroDto);
+  }
+
+```
+
+```javascript
+@Post()
+  create(@Body() createParticipanteDto: CreateParticipanteDto) {
+    return this.participanteService.createPrisma(createParticipanteDto);
+  }
+```
+
+
+
+ `@Patch(':id') ` 	**Cada uma das rotas principais tem o seu:**
+
+```javascript
+ @Patch(':id')
+  update(@Param('id') id: string, @Body() updateFilmeDto: UpdateFilmeDto) {
+    return this.filmesService.updatePrisma(+id, updateFilmeDto);
+  }
+```
+
+```javascript
+@Patch(':id')
+  update(@Param('id') id: string, @Body() updateGeneroDto: UpdateGeneroDto) {
+    return this.generoService.updatePrisma(+id, updateGeneroDto);
+  }
+```
+
+```javascript
+@Patch(':id')
+  update(@Param('id') id: string, @Body() updateParticipanteDto: UpdateParticipanteDto) {
+    return this.participanteService.updatePrisma(+id, updateParticipanteDto);
+  }
+```
+
+`@Delete`()  	**cada rota principal tem o seu:**
+
+```javascript
+@Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.filmesService.removePrisma(+id);
+  }
+```
+
+```javascript
+@Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.generoService.removePrisma(+id);
+  }
+```
+
+```javascript
+ @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.participanteService.removePrisma(+id);
+  }
+```
+
+`@Get `() 	  ***cada rota principal tem o seu:***
+
+```javascript
+@Get()
+  findAll() {
+    return this.filmesService.findAllPrisma();
+  }
+```
+
+```javascript
+@Get()
+  findAll() {
+    return this.generoService.findAllPrisma();
+  }
+```
+
+```javascript
+@Get()
+  findAll() {
+    return this.participanteService.findAllPrisma();
+  }
+```
+
+`@Get(':id')`  ***cada rota principal tem o seu:***
+
+```javascript
+@Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.filmesService.findOnePrisma(+id);
+  }
+```
+
+```javascript
+@Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.generoService.findOnePrisma(+id);
+  }
+```
+
+1. ```javascript
+   @Get(':id')
+     findOne(@Param('id') id: string) {
+       return this.participanteService.findOnePrisma(+id);
+     }
+   ```
+
+**Post  rota** `/genero` , **no Thunder:**			 
+
+- ​	**Usado para adicionar um genero de filmes no banco de dados local.**
+- ​    **Para adicionar um genero dentro do banco, necessita passar todos os dados com suas devidas informações a seguir no exemplo:
+
+```javascript
+ "nome": "comédia"   //String
+```
+
+**Post  rota** `/filmes` , **no Thunder:**
+
+```javascript
+  "nome": "Vovozona",              //String 
+  "imagem": "teste.jpg",           //String?
+  "data_lancamento": "25/11/2006", //String
+  "tempo_duracao": 110,            //Int
+  "generoid": 1                    //Int
+```
+
+**Post  rota** `/participante , **no Thunder:**
+
+```javascript
+  "nome": "Wiliam",                   //String
+  "imagem": "teste1.jpg",             //String?
+  "data_nascimento": "25/02/1980",    //String
+  "ator": "Pedro, Duda, Léo",         //String
+  "filmeid": 1                        //Int
+```
+
+​			 
 
 ## Running the app
 
 ```bash
-# development
-$ npm run start
-
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
+## 
 
 Nest is [MIT licensed](LICENSE).
