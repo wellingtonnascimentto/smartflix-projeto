@@ -6,7 +6,4 @@ export class CreateGeneroDto {
   @IsNotEmpty()
   @IsString()
   nome: string;
-
-  @IsNotEmpty()
-  filmeid: number;
 }

@@ -17,5 +17,9 @@ export class CreateFilmeDto {
 
   @IsNotEmpty()
   @IsInt()
-  tempo_duracao: number;  
+  tempo_duracao: number; 
+   
+  @IsNotEmpty()
+  @IsInt()
+  generoid:   number;
 }

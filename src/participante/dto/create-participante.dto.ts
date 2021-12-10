@@ -13,7 +13,12 @@ export class CreateParticipanteDto {
 
   @IsNotEmpty()
   @IsString()
-  data_nascimento: string; 
+  data_nascimento: string;
+
+  @IsNotEmpty()
+  @IsString()
+  ator: string;
+
   
   @IsNotEmpty()
   filmeid: number;

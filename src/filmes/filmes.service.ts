@@ -4,8 +4,6 @@ import { UpdateFilmeDto } from './dto/update-filme.dto';
 import { Filme } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 
-const lista = [];
-
 @Injectable()
 export class FilmesService {
   // eslint-disable-next-line prettier/prettier
