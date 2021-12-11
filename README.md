@@ -288,20 +288,26 @@ npx prisma studio
 - ​    **Para adicionar um genero dentro do banco, necessita passar todos os dados com suas devidas informações a seguir no exemplo:
 
 ```javascript
- "nome": "comédia"   //String
+ "id": 1,           //Number
+"nome": "comédia"   //String
 ```
 
 **Post  rota** `/filmes` , **no Thunder:**
 
+**`"generoid" neste campo sera feito a ligação do filme ao Genero que cadastramos logo acimma. Mas para isso devemos saber qual o ID do genero comedia e colocar neste campo generoid de filmes.`**
+
 ```javascript
+  "id": 1                          //Number
   "nome": "Vovozona",              //String 
   "imagem": "teste.jpg",           //String?
   "data_lancamento": "25/11/2006", //String
-  "tempo_duracao": 110,            //Int
-  "generoid": 1                    //Int
+  "tempo_duracao": 110,            //Number
+  "generoid": 1                    //Number
 ```
 
 **Post  rota** `/participante , **no Thunder:**
+
+**`"filmeid" neste campo sera feito a ligação do participante ao Filme que cadastramos logo acimma. Mas para isso devemos saber qual o ID do Filme que criamos e colocar neste campo filmeid de participante.`**
 
 ```javascript
   "nome": "Wiliam",                   //String
@@ -311,14 +317,26 @@ npx prisma studio
   "filmeid": 1                        //Int
 ```
 
-​			 
+* **Todos os `id` são autoincrement (criado sozinho, não precisa passar)**
 
 ## Running the app
 
 ```bash
-# watch mode
+# Use este comando para rodar o projeto
 $ npm run start:dev
 ```
+
+## Clonar repositório
+
+git clone https://github.com/wellingtonnascimentto/Projeto3_final_Mod3_backend
+
+
+
+## Autor
+
+**Wellington Nascimento**
+
+
 
 ## Support
 
@@ -327,3 +345,6 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## 
 
 Nest is [MIT licensed](LICENSE).
+
+
+
