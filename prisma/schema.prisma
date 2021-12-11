@@ -31,7 +31,7 @@ model Participante {
   nome             String
   imagem           String?
   data_nascimento  String
-  ator             String
+  ator1_ou_staff2  String
   filme            Filme[]          @relation(fields: [filmeid], references: [id])
   filmeid          Int  
 }

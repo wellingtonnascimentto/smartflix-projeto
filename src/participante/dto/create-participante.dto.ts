@@ -17,7 +17,7 @@ export class CreateParticipanteDto {
 
   @IsNotEmpty()
   @IsString()
-  ator: string;
+  ator1_ou_staff2: string;
 
   
   @IsNotEmpty()
